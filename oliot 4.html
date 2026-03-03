@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Pankki</title>
+</head>
+<body>
+
+<script>
+class Pankki {
+    constructor(tilinumero) {
+        this.tilinumero = tilinumero;
+        this.saldo = 0;
+        this.historia = [];
+    }
+
+    talleta(summa) {
+        let saldoEnnen = this.saldo;
+        this.saldo += summa;
+
+        this.historia.push({
+            pvm: new Date(),
+            tapahtuma: "Talletus",
+            summa: summa,
+            saldoEnnen: saldoEnnen,
+            saldoJälkeen: this.saldo
+        });
+    }
+
+    nosta(summa) {
+        if (summa <= this.saldo) {
+            let saldoEnnen = this.saldo;
+            this.saldo -= summa;
+
+            this.historia.push({
+                pvm: new Date(),
+                tapahtuma: "Nosto",
+                summa: summa,
+                saldoEnnen: saldoEnnen,
+                saldoJälkeen: this.saldo
+            });
+        } else {
+            console.log("Ei tarpeeksi saldoa.");
+        }
+    }
+
+    näytäTiedot() {
+        console.log("Tilinumero: " + this.tilinumero);
+        console.log("Saldo: " + this.saldo);
+    }
+
+    näytäHistoria() {
+        for (let i = 0; i < this.historia.length; i++) {
+            let t = this.historia[i];
+            console.log(
+                t.pvm,
+                t.tapahtuma,
+                "Summa: " + t.summa,
+                "Saldo ennen: " + t.saldoEnnen,
+                "Saldo jälkeen: " + t.saldoJälkeen
+            );
+        }
+    }
+}
+
+let tili = new Pankki("FI12345");
+
+tili.talleta(300);
+tili.nosta(100);
+
+tili.näytäTiedot();
+tili.näytäHistoria();
+
+</script>
+
+</body>
+</html>
